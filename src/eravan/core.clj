@@ -35,7 +35,7 @@
   )
 
 (defn count-deep
-  "This needs to be written keeping in mind number of items skipped"
+  "Counts number of expressions evaluated"
   [items]
   (cond
     (sequential? items) (reduce + 2 (map count-deep items))
