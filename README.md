@@ -1,14 +1,22 @@
 # eravan
 
-A Clojure library designed to ... well, that part is up to you.
+A chaotic lisp compiler in Clojure.
 
 ## Usage
 
-FIXME
+Very basic. You can use the `run` function to evaluate code.
+
+```
+(run "(define r 10) (* pi (* r r))")
+```
+
+## TODO
+1. Change eval such that it's easier to add new functionality without bloating up the function. Ideally in a data directed style (like in SICP).
+
+2. Add more basic functions in the global environment.
+
+3. In case of procedure call, create and execute in a new environment.
 
 ## License
 
-Copyright © 2018 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+MIT
