@@ -80,3 +80,81 @@
       (read-from-tokens-stream)
       )
   )
+
+(defn create-obj
+  "Takes a function-name mapping to create a dynamic lookup"
+  [paths]
+  (fn
+    [path & args]
+    (apply (paths path) args)
+    )
+  )
+
+;the global environment
+(defn get_global_env
+  []
+  (def env
+    (atom
+     {
+      '* *
+      'pi 3.14
+      })
+    )
+  (defn get [x] (@env x))
+  (defn set [x val]
+    (swap!
+     env
+     (fn [env] (assoc env x val))
+     )
+    )
+  (create-obj
+   {
+    :get get
+    :set set
+    }
+   )
+  )
+
+(def global_env (get_global_env))
+
+(defn evaluate
+  "evaluates an expression with environment. Uses global context if no env supplied"
+  ([x] (evaluate x global_env))
+  ([x env]
+   (println x (number? x))
+   (cond
+     (symbol? x) (env :get x)
+     (number? x) x
+     
+     (= (first x) 'if)
+     (cond
+       (evaluate (nth x 1) env)
+       (nth x 2)
+
+       :else
+       (nth x 3)
+       )
+
+     (= (first x) 'define)
+     (let [key (nth x 1)
+           value (evaluate (nth x 2) env)]
+       (env :set key value)
+       )
+
+     :else
+     (let [proc (evaluate (first x) env)
+           args (map (fn [arg] (evaluate arg env)) (rest x))
+           ]
+       (apply proc args)
+       )
+     )
+   )
+  )
+
+(defn run
+  "parses and evaluates expressions"
+  [x]
+  (let [exps (parse x)]
+    (map evaluate exps)
+    )
+  )
