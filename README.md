@@ -1,4 +1,4 @@
-# eravan
+# Eravan
 
 A chaotic lisp compiler in Clojure.
 
@@ -15,7 +15,7 @@ Very basic. You can use the `run` function to evaluate code.
 
 2. Add more basic functions in the global environment.
 
-3. In case of procedure call, create and execute in a new environment.
+3. In case of procedure call, create, and execute in, a new environment.
 
 ## License
 
